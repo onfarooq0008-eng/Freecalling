@@ -1,7 +1,7 @@
 {
   "name": "whatsapp-style-video-call",
   "version": "1.0.0",
-  "description": "WhatsApp-style 1:1 video calling app (WebRTC + Socket.IO signaling), deployable on Koyeb",
+  "description": "WhatsApp-style chat + audio/video calling app with online presence (WebRTC + Socket.IO signaling), deployable on Koyeb",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
