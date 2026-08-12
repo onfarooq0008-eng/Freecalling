@@ -3,31 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Video Call</title>
+<title>Chat &amp; Video Call</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ===== SCREEN 1: SET UP ===== -->
+  <!-- ===== SCREEN: IDENTITY SETUP ===== -->
   <div id="screen-setup" class="screen active">
     <div class="setup-card">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 3.5v-11l-4 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-      </div>
-      <h1>Video Call</h1>
-      <p class="subtitle">Enter your name and a call ID to connect. Share the same call ID with the other person.</p>
+      <div class="avatar-circle xl" id="setup-avatar-preview">?</div>
+      <h1>Welcome</h1>
+      <p class="subtitle">We've given you a random name — change it any time.</p>
 
       <label class="field">
         <span>Your name</span>
-        <input id="input-name" type="text" placeholder="e.g. Sam" maxlength="24" autocomplete="off" />
-      </label>
-
-      <label class="field">
-        <span>Call ID</span>
-        <div class="call-id-row">
-          <input id="input-room" type="text" placeholder="e.g. sam-jordan" maxlength="40" autocomplete="off" />
-          <button id="btn-generate" type="button" class="btn-ghost" title="Generate a random call ID">⟳</button>
-        </div>
+        <input id="input-name" type="text" maxlength="24" autocomplete="off" />
       </label>
 
       <button id="btn-join" class="btn-primary" type="button">Continue</button>
@@ -35,39 +25,83 @@
     </div>
   </div>
 
-  <!-- ===== SCREEN 2: LOBBY (camera preview + call button) ===== -->
-  <div id="screen-lobby" class="screen">
-    <div class="lobby-video-wrap">
-      <video id="lobby-preview" autoplay playsinline muted></video>
-      <div id="lobby-novideo" class="novideo-badge">Camera off</div>
-    </div>
-    <div class="lobby-panel">
-      <p class="lobby-room-label">Call ID: <span id="lobby-room-id"></span></p>
-      <div class="lobby-controls">
-        <button id="lobby-toggle-mic" class="ctrl-btn active" title="Toggle microphone">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z" fill="currentColor"/></svg>
-        </button>
-        <button id="lobby-toggle-cam" class="ctrl-btn active" title="Toggle camera">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 3.5v-11l-4 3.5Z" fill="currentColor"/></svg>
-        </button>
+  <!-- ===== SCREEN: HOME (online presence list) ===== -->
+  <div id="screen-home" class="screen light-screen">
+    <div class="home-header">
+      <div class="home-header-me">
+        <div class="avatar-circle sm" id="home-my-avatar">?</div>
+        <div class="home-header-me-text">
+          <span id="home-my-name">You</span>
+          <button id="btn-edit-name" class="link-btn" type="button">Edit</button>
+        </div>
       </div>
-      <button id="btn-start-call" class="btn-call" type="button">
-        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z" fill="currentColor"/></svg>
-        <span id="btn-start-call-label">Call</span>
+      <button id="btn-group-mode" class="icon-btn" title="Start a group call">
+        <svg viewBox="0 0 24 24" width="21" height="21"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3Zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5Z" fill="currentColor"/></svg>
       </button>
-      <button id="btn-leave-lobby" class="btn-text" type="button">Back</button>
+    </div>
+
+    <div id="edit-name-row" class="edit-name-row">
+      <input id="input-edit-name" type="text" maxlength="24" autocomplete="off" />
+      <button id="btn-save-name" class="btn-pill" type="button">Save</button>
+    </div>
+
+    <div id="group-select-bar" class="group-select-bar">
+      <span id="group-select-count">0 selected</span>
+      <div class="group-select-actions">
+        <button id="btn-group-audio" class="btn-pill" type="button">Audio call</button>
+        <button id="btn-group-video" class="btn-pill" type="button">Video call</button>
+        <button id="btn-group-cancel" class="btn-pill ghost" type="button">Cancel</button>
+      </div>
+    </div>
+
+    <div class="home-list-label">Online</div>
+    <div id="online-list" class="online-list"></div>
+
+    <div id="home-empty" class="home-empty">
+      <div class="home-empty-icon">
+        <svg viewBox="0 0 24 24" width="34" height="34"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z" fill="currentColor"/></svg>
+      </div>
+      <p>No one else is online right now.</p>
+      <p class="home-empty-sub">Share this app's link — as soon as a friend opens it, they'll show up here.</p>
     </div>
   </div>
 
-  <!-- ===== SCREEN 3: RINGING (outgoing) ===== -->
-  <div id="screen-ringing" class="screen call-screen">
+  <!-- ===== SCREEN: CHAT THREAD ===== -->
+  <div id="screen-chat" class="screen light-screen">
+    <div class="chat-header">
+      <button id="btn-chat-back" class="icon-btn" title="Back">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2Z" fill="currentColor"/></svg>
+      </button>
+      <div class="avatar-circle sm" id="chat-header-avatar">?</div>
+      <div class="chat-header-text">
+        <span id="chat-header-name">Name</span>
+        <span id="chat-header-status">Online</span>
+      </div>
+      <button id="btn-chat-audio-call" class="icon-btn" title="Audio call">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.2c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z" fill="currentColor"/></svg>
+      </button>
+      <button id="btn-chat-video-call" class="icon-btn" title="Video call">
+        <svg viewBox="0 0 24 24" width="21" height="21"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 3.5v-11l-4 3.5Z" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div id="typing-indicator" class="typing-indicator">typing…</div>
+    <div class="chat-input-row">
+      <input id="chat-input" type="text" placeholder="Message" maxlength="2000" autocomplete="off" />
+      <button id="btn-send-message" class="send-btn" type="button">
+        <svg viewBox="0 0 24 24" width="19" height="19"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: OUTGOING CALL ===== -->
+  <div id="screen-outgoing" class="screen call-screen">
     <div class="ringing-center">
       <div class="avatar-ring">
-        <div class="avatar-circle" id="ringing-avatar-initial">?</div>
+        <div class="avatar-circle" id="outgoing-avatar-initial">?</div>
       </div>
-      <h2 id="ringing-name">Calling…</h2>
-      <p class="ringing-status">Waiting for them to join the call ID</p>
-      <p class="ringing-room">Call ID: <span id="ringing-room-id"></span></p>
+      <h2 id="outgoing-title">Calling…</h2>
+      <p class="ringing-status" id="outgoing-subtitle">Video call</p>
     </div>
     <div class="call-bottom-bar">
       <button id="btn-cancel-call" class="ctrl-btn danger big" title="Cancel">
@@ -76,14 +110,14 @@
     </div>
   </div>
 
-  <!-- ===== SCREEN 4: INCOMING CALL ===== -->
+  <!-- ===== SCREEN: INCOMING CALL ===== -->
   <div id="screen-incoming" class="screen call-screen">
     <div class="ringing-center">
       <div class="avatar-ring pulse">
         <div class="avatar-circle" id="incoming-avatar-initial">?</div>
       </div>
-      <h2 id="incoming-name">Someone</h2>
-      <p class="ringing-status">Incoming video call…</p>
+      <h2 id="incoming-title">Someone</h2>
+      <p class="ringing-status" id="incoming-subtitle">Incoming video call…</p>
     </div>
     <div class="incoming-actions">
       <button id="btn-decline" class="ctrl-btn danger big" title="Decline">
@@ -95,48 +129,69 @@
     </div>
   </div>
 
-  <!-- ===== SCREEN 5: ACTIVE CALL ===== -->
-  <div id="screen-active" class="screen call-screen active-call">
-    <video id="remote-video" autoplay playsinline></video>
-    <div id="remote-placeholder" class="remote-placeholder">
-      <div class="avatar-circle lg" id="active-avatar-initial">?</div>
-      <p id="active-peer-name">Connecting…</p>
-    </div>
+  <!-- ===== SCREEN: ACTIVE CALL (audio or video, unified) ===== -->
+  <div id="screen-call" class="screen call-screen active-call">
+    <div id="video-grid" class="video-grid"></div>
 
     <div class="call-topbar">
       <div class="call-peer-info">
-        <span id="active-name-label">Connecting…</span>
-        <span id="call-timer" class="call-timer">00:00</span>
+        <span id="active-name-label">Connected</span>
+        <span class="call-topbar-sub">
+          <span id="call-timer" class="call-timer">00:00</span>
+          <span class="dot-sep">·</span>
+          <span id="participant-count">1</span>
+          <span class="dot-sep">·</span>
+          <span id="quality-indicator" class="quality-indicator good">Good connection</span>
+        </span>
       </div>
     </div>
 
-    <video id="local-video" autoplay playsinline muted class="local-pip"></video>
-
-    <div class="call-bottom-bar">
+    <div id="call-bottom-bar" class="call-bottom-bar">
       <button id="active-toggle-mic" class="ctrl-btn active" title="Mute">
         <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z" fill="currentColor"/></svg>
       </button>
-      <button id="active-toggle-cam" class="ctrl-btn active" title="Turn off camera">
+      <button id="active-toggle-cam" class="ctrl-btn active video-only" title="Turn off camera">
         <svg viewBox="0 0 24 24" width="22" height="22"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 3.5v-11l-4 3.5Z" fill="currentColor"/></svg>
       </button>
-      <button id="active-switch-cam" class="ctrl-btn" title="Switch camera">
+      <button id="active-switch-cam" class="ctrl-btn video-only" title="Switch camera">
         <svg viewBox="0 0 24 24" width="22" height="22"><path d="M7 7h3l1.5-2h1L14 7h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm5 3a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" fill="currentColor"/></svg>
       </button>
-      <button id="btn-hangup" class="ctrl-btn danger big" title="End call">
+      <button id="active-toggle-speaker" class="ctrl-btn active" title="Mute incoming audio">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 10v4h4l5 5V5L7 10H3Zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12ZM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77Z" fill="currentColor"/></svg>
+      </button>
+      <button id="btn-fullscreen" class="ctrl-btn video-only" title="Full screen">
+        <svg id="icon-fs-enter" viewBox="0 0 24 24" width="20" height="20"><path d="M7 14H5v5h5v-2H7v-3Zm-2-4h2V7h3V5H5v5Zm12 7h-3v2h5v-5h-2v3ZM14 5v2h3v3h2V5h-5Z" fill="currentColor"/></svg>
+        <svg id="icon-fs-exit" viewBox="0 0 24 24" width="20" height="20" style="display:none"><path d="M5 16h3v3h2v-5H5v2Zm3-8H5v2h5V5H8v3Zm6 11h2v-3h3v-2h-5v5Zm2-11V5h-2v5h5V8h-3Z" fill="currentColor"/></svg>
+      </button>
+      <button id="btn-hangup" class="ctrl-btn danger big" title="Leave call">
         <svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 9c-1.6 0-3.2.3-4.6.8-.4.2-.9 0-1.1-.4L5 6.9c-.2-.4-.1-.9.3-1.1C7.7 4.6 9.8 4 12 4s4.3.6 6.7 1.8c.4.2.5.7.3 1.1l-1.3 2.5c-.2.4-.7.6-1.1.4C15.2 9.3 13.6 9 12 9Zm0 3c1 0 1.9.1 2.8.4.4.1.6.5.5.9l-.6 2.7c-.1.4-.5.7-.9.6-.5-.1-1.1-.2-1.8-.2s-1.3.1-1.8.2c-.4.1-.8-.2-.9-.6l-.6-2.7c-.1-.4.1-.8.5-.9.9-.3 1.8-.4 2.8-.4Z" fill="currentColor"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- ===== SCREEN 6: CALL ENDED ===== -->
+  <!-- ===== SCREEN: CALL ENDED ===== -->
   <div id="screen-ended" class="screen">
     <div class="setup-card">
       <div class="brand-mark"><svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M12 9c-1.6 0-3.2.3-4.6.8-.4.2-.9 0-1.1-.4L5 6.9c-.2-.4-.1-.9.3-1.1C7.7 4.6 9.8 4 12 4s4.3.6 6.7 1.8c.4.2.5.7.3 1.1l-1.3 2.5c-.2.4-.7.6-1.1.4C15.2 9.3 13.6 9 12 9Zm0 3c1 0 1.9.1 2.8.4.4.1.6.5.5.9l-.6 2.7c-.1.4-.5.7-.9.6-.5-.1-1.1-.2-1.8-.2s-1.3.1-1.8.2c-.4.1-.8-.2-.9-.6l-.6-2.7c-.1-.4.1-.8.5-.9.9-.3 1.8-.4 2.8-.4Z" stroke="currentColor" stroke-width="1.6"/></svg></div>
       <h1>Call ended</h1>
       <p class="subtitle" id="ended-summary">The call has ended.</p>
-      <button id="btn-back-to-lobby" class="btn-primary" type="button">Back to lobby</button>
+      <button id="btn-back-to-home" class="btn-primary" type="button">Back to chats</button>
     </div>
   </div>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- Tile template used for both audio (avatar-only) and video call participants -->
+  <template id="tile-template">
+    <div class="tile">
+      <video autoplay playsinline></video>
+      <div class="tile-placeholder"><div class="avatar-circle"></div></div>
+      <div class="tile-label">
+        <span class="tile-name"></span>
+        <svg class="tile-mic-off" viewBox="0 0 24 24" width="14" height="14"><path d="M19 11h-1.7a5.3 5.3 0 0 1-.1 1L19 13.7c.1-.5.1-1 .1-1.7v-1ZM4.3 3 3 4.3l5 5V11a4 4 0 0 0 6.1 3.4l1.5 1.5A5.9 5.9 0 0 1 12 17c-3.3 0-6-2.2-6-6H4c0 3.4 2.5 6.3 6 6.9V21h2v-3.1c.9-.1 1.7-.4 2.5-.9L19.7 21 21 19.7 4.3 3ZM15 11l-8-8v.3L15 11.3V11Z" fill="currentColor"/></svg>
+      </div>
+    </div>
+  </template>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
